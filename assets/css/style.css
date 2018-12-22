@@ -1,0 +1,70 @@
+body{
+  color: #0275d8;
+}
+
+.header{
+  background-color: #dfebff;
+  color: #0275d8;
+  justify-content: space-between;
+  float: clear;
+}
+
+.title{
+  color: #0275d8;
+  font-size: 24px;
+  
+}
+
+
+.clockDisplay{
+  color: #0275d8;
+  font-size: 20px;
+  text-align: right;
+  align-self: right;
+}
+
+.qntxtbox {
+    padding: 5px;
+    background-color: #dfebff;
+    border-radius: 12px;
+    font-size: 1.2em;
+}
+
+.qnbox{
+  background-color:#f5f5f5;
+  margin-top: 15px;
+}
+
+.box{
+  border:1px #0275d8 solid;
+  border-radius: 5px;
+  padding: 10px 0px 10px 0px;
+
+}
+
+.optionList{
+  padding-left: 30px;
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+
+.subBtn{
+  margin-top: 15px; 
+  text-align: center;
+}
+
+.jumbotron{
+  border:1px #0275d8 solid;
+}
+
+.gifImg{
+  width: 150px;
+  height:150px;
+  padding: 10px;
+
+}
+
+.dynBtn{
+  color:#0275d8;
+}
