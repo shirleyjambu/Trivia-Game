@@ -187,6 +187,7 @@ $(document).ready(function () {
     if (questionCounter < 10) {
       setQuestions(questionCounter);
     } else {
+      stopClock();
       displayResults();
     }
 
