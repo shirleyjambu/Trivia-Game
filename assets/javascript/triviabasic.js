@@ -44,8 +44,7 @@ function setQuestion(qObj){
     $radio.attr("id","options");
     $radio.attr("value",arrOptions[i]);
     $radio.attr("type","radio");
-    $radio.on("click", function(){   console.log($(this).val());});
-  
+      
     $options.append($radio);
     $options.append(" " + arrOptions[i]+" ");
   }
@@ -78,7 +77,7 @@ function setSubmitButton(){
   $btn.attr("type","submit");
   $btn.attr("id","submit-form");
   $btn.attr("value","Submit Answers");
-  $btn.addClass("subBtn");
+  $btn.addClass("btn");
   $("#questionDiv").append($btn);
 }
 
@@ -88,7 +87,7 @@ function getReplayButton(){
   $btn.attr("type","button");
   $btn.attr("id","replay");
   $btn.attr("value","Play Basic");
-  $btn.addClass("subBtn");
+  $btn.addClass("btn");
 
   return $btn;
   

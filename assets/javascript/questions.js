@@ -1,7 +1,7 @@
 var objQ1 ={
   qnum:"1",
   id:"Q1",
-  question:"How many stiches are there on a base ball?",
+  question:"How many stitches are there on a base ball?",
   options:["602","200","331","108"],
   answer:"108"
 };

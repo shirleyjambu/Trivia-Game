@@ -11,6 +11,7 @@ var unanswered=10;
 function setStart(){
   
   $startBtn = getButton("Start Game","start");
+  
   $("#content").html($startBtn);
   
 }
@@ -21,7 +22,7 @@ function getButton(text,id){
   $btn.attr("type","button");
   $btn.attr("id",id);
   $btn.attr("value",text);
-  $btn.addClass("dynBtn");
+  $btn.addClass("btn");
 
   return $btn;
 }
@@ -39,7 +40,7 @@ function setQuestions(quIndex)
   var $card = $("<div class='card'>");
 
   // article header
-  var $cardHeader = $("<h4 class='card-header bg-dark text-light'>").text(question).appendTo($card);
+  var $cardHeader = $("<h4 class='card-header'>").text(question).appendTo($card);
 
   // article body
   var $cardBody = $("<div class='card-body'>");
@@ -91,10 +92,10 @@ function getImg(sText){
 
   //once you get the response
     .then(function(response) {
-      console.log(console);
+      //console.log(console);
     //get the url of the image from the response
       var imageUrl = response.data.image_original_url;
-      console.log(imageUrl);
+      
       //create a image 
       var $img = $("<img>");
 
