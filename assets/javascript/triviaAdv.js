@@ -9,7 +9,7 @@ var unanswered = 10;
 
 // Functions
 function setStart() {
-
+  setClockDisplay();
   $startBtn = getButton("Start Game", "start");
 
   $("#content").html(`<p>Click to start. Enjoy the Game !</p>`);

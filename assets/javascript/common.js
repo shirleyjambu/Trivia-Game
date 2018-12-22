@@ -1,3 +1,4 @@
+
 // Time Converter
 function timeConverter(t) {
   //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
@@ -17,4 +18,9 @@ function timeConverter(t) {
   }
 
   return minutes + ":" + seconds;
+}
+
+// Sets time at start of Game
+function setClockDisplay() {
+  $("#clock-display").text(timeConverter(time));
 }

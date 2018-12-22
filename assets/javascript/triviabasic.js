@@ -152,11 +152,6 @@ function setResults() {
   $("#result").html($resultDiv);
 }
 
-// Sets time at start of Game
-function setClockDisplay() {
-  $("#clock-display").text(timeConverter(timelimit));
-}
-
 // Reset values and set a new game
 function startNewGame() {
   $("#result").empty();
