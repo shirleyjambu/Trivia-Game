@@ -1,16 +1,18 @@
 //Intialise
-var correct=0;
-var incorrect=0;
+var correct = 0;
+var incorrect = 0;
 var unanswered = 10;
-var isClockRunning=false;
+var isClockRunning = false;
 var timelimit = 60;
 var time = timelimit;
-var noSubmitButton=true;
-var intervalId =0;
+var noSubmitButton = true;
+var intervalId = 0;
 
 
 //Functions
-function setQuestion(qObj){
+// Sets a Question in the page,
+// Gets the values required from the question object
+function setQuestion(qObj) {
   var qNumber = qObj.qnum;
   var qId = qObj.id;
   var question = qObj.question;
@@ -28,7 +30,7 @@ function setQuestion(qObj){
   //Div for column
   var $cDiv = $("<div>");
   $cDiv.addClass("col-12");
-  
+
   //Div for Question
   var $sQuestion = $("<div>");
   $sQuestion.addClass("qntxtbox");
@@ -38,15 +40,15 @@ function setQuestion(qObj){
   var $options = $("<div>");
   $options.addClass("optionList");
 
-  for(var i=0;i<arrOptions.length;i++){
+  for (var i = 0; i < arrOptions.length; i++) {
     var $radio = $("<input>");
-    $radio.attr("name",qId);
-    $radio.attr("id","options");
-    $radio.attr("value",arrOptions[i]);
-    $radio.attr("type","radio");
-      
+    $radio.attr("name", qId);
+    $radio.attr("id", "options");
+    $radio.attr("value", arrOptions[i]);
+    $radio.attr("type", "radio");
+
     $options.append($radio);
-    $options.append(" " + arrOptions[i]+" ");
+    $options.append(" " + arrOptions[i] + " ");
   }
 
   // Add all to Question Container
@@ -54,158 +56,149 @@ function setQuestion(qObj){
   $options.appendTo($cDiv);
   $cDiv.appendTo($rDiv);
   $rDiv.appendTo($qDiv);
-  
-//  $qDiv.append($rDiv,$cDiv,$sQuestion,$options);
-    
+
   $("#questionDiv").append($qDiv);
 }
-function showValue(obj){
-   alert(obj);
-}
 
-
-function displayQuestions(){
-  // Load the questions
-  quArr.forEach(function(qObj){
+// Displays all the Questions
+function displayQuestions() {
+  // The array is stored in the questions.js file
+  quArr.forEach(function (qObj) {
     setQuestion(qObj);
   });
 }
 
-function setSubmitButton(){
-  
+// Set the submit button
+function setSubmitButton() {
+
   var $btn = $("<input>");
-  $btn.attr("type","submit");
-  $btn.attr("id","submit-form");
-  $btn.attr("value","Submit Answers");
+  $btn.attr("type", "submit");
+  $btn.attr("id", "submit-form");
+  $btn.attr("value", "Submit Answers");
   $btn.addClass("btn");
   $("#questionDiv").append($btn);
 }
 
-function getReplayButton(){
-  
-  var $btn = $("<input>");
-  $btn.attr("type","button");
-  $btn.attr("id","replay");
-  $btn.attr("value","Play Basic");
-  $btn.addClass("btn");
-
-  return $btn;
-  
-}
-
-  function startClock(){
+//Clock started
+function startClock() {
   if (!isClockRunning) {
-     intervalId = setInterval(count,1000);
-     isClockRunning = true;
+    intervalId = setInterval(count, 1000);
+    isClockRunning = true;
   }
 }
 
+//Clock decrement and display
 function count() {
   time--;
   var rTime = timeConverter(time);
   $("#clock-display").text(rTime);
 
-  if(time === 0){
+  if (time === 0) {
     stopClock();
     checkAnswers();
     $("#questionDiv").empty();
-      
+
   }
 }
 
+//Stop Clock
 function stopClock() {
   clearInterval(intervalId);
   isClockRunning = false;
 }
 
+// Check the answers
+function checkAnswers() {
 
-function checkAnswers(){
-  
-  correct=0;
-  incorrect=0;
-  unanswered=10;
-  
-  for(var i=0; i < quArr.length ; i++){
+  correct = 0;
+  incorrect = 0;
+  unanswered = 10;
+
+  for (var i = 0; i < quArr.length; i++) {
     var oQ = quArr[i];
-    var userAnswer = $("input[name='"+ oQ.id +"']:checked").val();
+    var userAnswer = $("input[name='" + oQ.id + "']:checked").val();
 
-    // check truthy value
-    if(userAnswer){
-      if(oQ.answer === userAnswer){
+    // check truthy value, if option not selected
+    if (userAnswer) {
+      if (oQ.answer === userAnswer) {
         correct++;
-      }else{
+      } else {
         incorrect++;
       }
       unanswered--;
     }
-    
+
   }
   setResults();
 }
 
-function setResults(){
-  
+// Display the result to page
+function setResults() {
+
   //Div for Results
   var $resultDiv = $("<div>");
   $resultDiv.addClass("jumbotron d-flex flex-column align-items-center justify-content-center text-center");
-  if(time === 0){
+  if (time === 0) {
     $resultDiv.append(`<h4>Oops !! Time's Up !!</h4>`);
   }
   $resultDiv.append(`<h4>Correct: ${correct} , Incorrect: ${incorrect}, Unanswered: ${unanswered}</h4>
   `);
-    
+
   $resultDiv.append(`<a href='triviaAdv.html'><button type="button" class="btn">Play Advanced</button></a>`)
   $resultDiv.append(`<a href='triviaBasic.html'><button type="button" class="btn">Play Basic</button></a>`)
   $resultDiv.append(`<a href='index.html'><button type="button" class="btn">Home</button></a>`)
 
-  
+
   $("#result").html($resultDiv);
 }
 
-function setClockDisplay(){
+// Sets time at start of Game
+function setClockDisplay() {
   $("#clock-display").text(timeConverter(timelimit));
 }
 
-function startNewGame(){
+// Reset values and set a new game
+function startNewGame() {
   $("#result").empty();
   $("#question").empty();
-  correct=0;
-  incorrect=0;
-  isClockRunning=false;
-  noSubmitButton=true;
-  time=timelimit;
+  correct = 0;
+  incorrect = 0;
+  isClockRunning = false;
+  noSubmitButton = true;
+  time = timelimit;
   setClockDisplay();
-  displayQuestions();   
+  displayQuestions();
 }
 //End of Functions
 
-$(document).ready(function(){
- 
-startNewGame();
+// Event Handlers
+$(document).ready(function () {
 
-// When form submitted
-$(document).on("click","#submit-form",function(event){
-  event.preventDefault();
-  
-  stopClock();
-   checkAnswers();
-   $("#questionDiv").empty();
-});
-//End of form submission
-
-//On Click of any option chosen, start clock
-$(document).on("click","#options",function(){
-  startClock();
-  if(noSubmitButton){
-    setSubmitButton();
-    noSubmitButton = false;
-  }
-  
- });
- 
-// When Play Again is clicked
-$(document).on("click","#replay",function(){
+  //Start new game
   startNewGame();
- });
+
+  // When form submitted
+  $(document).on("click", "#submit-form", function (event) {
+    event.preventDefault();
+
+    stopClock();
+    checkAnswers();
+    $("#questionDiv").empty();
+  });
+
+
+  //On Click of any option chosen, start clock
+  $(document).on("click", "#options", function () {
+    startClock();
+    if (noSubmitButton) {
+      setSubmitButton();
+      noSubmitButton = false;
+    }
+  });
+
+  // When Play Again is clicked
+  $(document).on("click", "#replay", function () {
+    startNewGame();
+  });
 
 });

@@ -1,40 +1,40 @@
 // Variables
-var time=30;
+var time = 60;
 var isClockRunning = false;
 var intervalId = 0;
 var questionCounter = 0;
-var correct=0;
-var incorrect=0;
-var unanswered=10;
+var correct = 0;
+var incorrect = 0;
+var unanswered = 10;
 
 // Functions
-function setStart(){
-  
-  $startBtn = getButton("Start Game","start");
-  
-  $("#content").html($startBtn);
-  
+function setStart() {
+
+  $startBtn = getButton("Start Game", "start");
+
+  $("#content").html(`<p>Click to start. Enjoy the Game !</p>`);
+  $("#content").append($startBtn);
+
 }
 
-function getButton(text,id){
-  
+function getButton(text, id) {
+
   var $btn = $("<input>");
-  $btn.attr("type","button");
-  $btn.attr("id",id);
-  $btn.attr("value",text);
+  $btn.attr("type", "button");
+  $btn.attr("id", id);
+  $btn.attr("value", text);
   $btn.addClass("btn");
 
   return $btn;
 }
 
-function setQuestions(quIndex)
-{
+function setQuestions(quIndex) {
 
   var quObj = quArr[quIndex];
   var question = quObj.question;
   var options = quObj.options;
   var qId = quObj.id;
-  
+
 
   // create article card
   var $card = $("<div class='card'>");
@@ -44,11 +44,11 @@ function setQuestions(quIndex)
 
   // article body
   var $cardBody = $("<div class='card-body'>");
-  for(var i=0; i<options.length;i++){
+  for (var i = 0; i < options.length; i++) {
     $cardBody
-    .append(`<div class="card-title"><a class="option-link" id="${qId}" href="#" data-value="${options[i]}">${options[i]}</a></div>`);
+      .append(`<div class="card-title"><a class="option-link" id="${qId}" href="#" data-value="${options[i]}">${options[i]}</a></div>`);
   }
-     
+
   $cardBody.appendTo($card);
 
   $("#content").empty();
@@ -56,19 +56,19 @@ function setQuestions(quIndex)
 
 }
 
-function checkAnswer(userAns){
-  
+function checkAnswer(userAns) {
+
   var quObj = quArr[questionCounter];
   var answer = quObj.answer;
-  var imgSearchTxt = quObj.imgText; 
+  var imgSearchTxt = quObj.imgText;
 
   var userMsg = "";
-  if(userAns === answer){
+  if (userAns === answer) {
     userMsg = "<h6>You got that right.</h6>";
     correct++;
     unanswered--;
-  }else{
-    userMsg = "<h6>Better Luck Next time. The answer is '"+ answer +"'.</h6>";
+  } else {
+    userMsg = "<h6>Better Luck Next time. The answer is '" + answer + "'.</h6>";
     incorrect++;
     unanswered--;
   }
@@ -77,25 +77,25 @@ function checkAnswer(userAns){
 
   //Get Image and add in content
   getImg(imgSearchTxt);
-  
+
 }
 
-function getImg(sText){
+function getImg(sText) {
   //set the Query URL
-  var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag="+sText;
+  var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + sText;
   console.log(queryURL);
   //Ajax call with queryurl
   $.ajax({
-    url: queryURL,
-    method: "GET"
-  })
+      url: queryURL,
+      method: "GET"
+    })
 
-  //once you get the response
-    .then(function(response) {
+    //once you get the response
+    .then(function (response) {
       //console.log(console);
-    //get the url of the image from the response
+      //get the url of the image from the response
       var imageUrl = response.data.image_original_url;
-      
+
       //create a image 
       var $img = $("<img>");
 
@@ -107,17 +107,15 @@ function getImg(sText){
       $("#content").append($img);
 
       //Set Next Button
-     setNextButton();
-      
-    });
+      setNextButton();
 
-     
+    });
 }
 
-function displayResults(){
+function displayResults() {
   var $resultDiv = $("<div>");
-  $resultDiv.addClass("jumbotron d-flex flex-column align-items-center justify-content-center text-center");
-  if(time === 0){
+  $resultDiv.addClass("d-flex flex-column align-items-center justify-content-center text-center");
+  if (time === 0) {
     $resultDiv.append(`<h4>Oops !! Time's Up !!</h4>`);
   }
   $resultDiv.append(`<h4>Correct: ${correct} , Incorrect: ${incorrect}, Unanswered: ${unanswered}</h4>
@@ -128,25 +126,22 @@ function displayResults(){
   $("#content").html($resultDiv);
 }
 
-
-
-function setNextButton(){
-
-  var $nextBtn = getButton("Next","next");
+function setNextButton() {
+  var $nextBtn = getButton("Next", "next");
   $("#content")
-      .append($("<div>"))
-      .append($nextBtn);
+    .append($("<div>"))
+    .append($nextBtn);
 }
 
-function startGame(){
+function startGame() {
   setQuestions(questionCounter);
   startClock();
 }
 
-function startClock(){
+function startClock() {
   if (!isClockRunning) {
-     intervalId = setInterval(count,1000);
-     isClockRunning = true;
+    intervalId = setInterval(count, 1000);
+    isClockRunning = true;
   }
 }
 
@@ -155,9 +150,9 @@ function count() {
   var rTime = timeConverter(time);
   $("#clock-display").text(rTime);
 
-  if(time === 0){
+  if (time === 0) {
     stopClock();
-    displayResults();   
+    displayResults();
   }
 }
 
@@ -167,37 +162,34 @@ function stopClock() {
 }
 
 // Event Handlers
-$(document).ready(function(){
+$(document).ready(function () {
 
-// Set the start button
-setStart();  
+  // Set the start button
+  setStart();
 
-// On Start of Game
-$(document).on("click","#start",function(){
-   startGame();
-});
+  // On Start of Game
+  $(document).on("click", "#start", function () {
+    startGame();
+  });
 
-// When an option is chosen
-$(document).on("click",".option-link",function(event){
-  
-  event.preventDefault();
-  var answer =$(this).attr("data-value"); 
-  checkAnswer(answer);
-});
+  // When an option is chosen
+  $(document).on("click", ".option-link", function (event) {
 
-// When next button
-$(document).on("click","#next",function(event){
-  
-  questionCounter++;
-  console.log(" questionCounter : " + questionCounter);
-  if(questionCounter < 10){
+    var answer = $(this).attr("data-value");
+    checkAnswer(answer);
+  });
+
+  // When next button
+  $(document).on("click", "#next", function (event) {
+
+    questionCounter++;
     
-    setQuestions(questionCounter);
-  }else{
-    displayResults();   
-  }
-  
-  
-});
+    if (questionCounter < 10) {
+      setQuestions(questionCounter);
+    } else {
+      displayResults();
+    }
+
+  });
 
 });
