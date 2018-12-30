@@ -1,15 +1,17 @@
 // Variables
-var time = 60;
+var timelimit = 10;
+var time = timelimit;
+var tOut = 3;
 var isClockRunning = false;
 var intervalId = 0;
 var questionCounter = 0;
 var correct = 0;
 var incorrect = 0;
-var unanswered = 10;
+var unanswered = 0;
+var qAvlbl = quArr.length;
 
 // Functions
 function setStart() {
-  setClockDisplay();
   $startBtn = getButton("Start Game", "start");
 
   $("#content").html(`<p>Click to start. Enjoy the Game !</p>`);
@@ -31,7 +33,7 @@ function getButton(text, id) {
 function setQuestions(quIndex) {
 
   var quObj = quArr[quIndex];
-  var question = quObj.question;
+  var question = quObj.number +"). "+ quObj.question;
   var options = quObj.options;
   var qId = quObj.id;
 
@@ -40,7 +42,9 @@ function setQuestions(quIndex) {
   var $card = $("<div class='card'>");
 
   // article header
-  var $cardHeader = $("<h4 class='card-header'>").text(question).appendTo($card);
+  //Time Left : <span id="clock-display">00:00</span>
+  var $cardHeader = $("<h4 class='card-header'>").html(question).appendTo($card);
+
 
   // article body
   var $cardBody = $("<div class='card-body'>");
@@ -63,21 +67,27 @@ function checkAnswer(userAns) {
   var imgSearchTxt = quObj.imgText;
 
   var userMsg = "";
-  if (userAns === answer) {
-    userMsg = "<h6>You got that right.</h6>";
-    correct++;
-    unanswered--;
-  } else {
-    userMsg = "<h6>Better Luck Next time. The answer is '" + answer + "'.</h6>";
-    incorrect++;
-    unanswered--;
+  if(userAns === "noAns"){
+    userMsg = "<h6>Oops! Time's Up. Here is the answer :'" + answer + "'.</h6>";
+    unanswered++;
+  }else{
+    if (userAns === answer) {
+      userMsg = "<h6>You got that right.</h6>";
+      correct++;
+    } else {
+      userMsg = "<h6>Better Luck Next time. The answer is :'" + answer + "'.</h6>";
+      incorrect++;
+    }
   }
+  
   $("#content").empty();
   $("#content").append(userMsg);
 
   //Get Image and add in content
   getImg(imgSearchTxt);
 
+  // A setTimeout to run questionTracker after 5 second.
+  setTimeout(questionTracker,(1000 * tOut));
 }
 
 function getImg(sText) {
@@ -107,7 +117,7 @@ function getImg(sText) {
       $("#content").append($img);
 
       //Set Next Button
-      setNextButton();
+      //setNextButton();
 
     });
 }
@@ -115,9 +125,7 @@ function getImg(sText) {
 function displayResults() {
   var $resultDiv = $("<div>");
   $resultDiv.addClass("d-flex flex-column align-items-center justify-content-center text-center");
-  if (time === 0) {
-    $resultDiv.append(`<h4>Oops !! Time's Up !!</h4>`);
-  }
+  $resultDiv.append(`<h4>Game Over !!</h4>`);
   $resultDiv.append(`<h4>Correct: ${correct} , Incorrect: ${incorrect}, Unanswered: ${unanswered}</h4>
   `);
   $resultDiv.append(`<a href='triviaAdv.html'><button type="button" class="btn">Play Advanced</button></a>`)
@@ -126,12 +134,12 @@ function displayResults() {
   $("#content").html($resultDiv);
 }
 
-function setNextButton() {
+/*function setNextButton() {
   var $nextBtn = getButton("Next", "next");
   $("#content")
     .append($("<div>"))
     .append($nextBtn);
-}
+}*/
 
 function startGame() {
   setQuestions(questionCounter);
@@ -140,6 +148,8 @@ function startGame() {
 
 function startClock() {
   if (!isClockRunning) {
+    time = timelimit;
+    setClockDisplay();
     intervalId = setInterval(count, 1000);
     isClockRunning = true;
   }
@@ -152,13 +162,26 @@ function count() {
 
   if (time === 0) {
     stopClock();
-    displayResults();
+    checkAnswer("noAns");
+    //displayResults();
   }
 }
 
 function stopClock() {
   clearInterval(intervalId);
   isClockRunning = false;
+}
+
+function questionTracker(){
+  questionCounter++;
+    
+    if (questionCounter < qAvlbl) {
+       setQuestions(questionCounter);
+       startClock();
+    } else {
+      stopClock();
+      displayResults();
+    }
 }
 
 // Event Handlers
@@ -174,23 +197,14 @@ $(document).ready(function () {
 
   // When an option is chosen
   $(document).on("click", ".option-link", function (event) {
-
+    stopClock();
     var answer = $(this).attr("data-value");
     checkAnswer(answer);
   });
 
   // When next button
-  $(document).on("click", "#next", function (event) {
-
-    questionCounter++;
-    
-    if (questionCounter < 10) {
-      setQuestions(questionCounter);
-    } else {
-      stopClock();
-      displayResults();
-    }
-
-  });
+  /*$(document).on("click", "#next", function (event) {
+    questionTracker();
+  });*/
 
 });

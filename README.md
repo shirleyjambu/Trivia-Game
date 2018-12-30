@@ -14,8 +14,8 @@ The Basic Version.
 
 The Advanced Version.
 
-1. The player will have a set timer for all questions.
+1. The player will have a set timer of 10 seconds for each question.
 
 2. The player will be presented with one question at a time.
 
-3. At end of each question the result will be printed.
+3. At end of each question the result will be printed and after 3 seconds the next question will be presented itself.
